@@ -1,6 +1,7 @@
 import type { Request, Response} from 'express'
 import Project from '../models/Project'
 
+
 export class ProjectController  {
 
     static createProject = async (req: Request, res: Response) => {
@@ -23,9 +24,25 @@ export class ProjectController  {
             const projects = await Project.find({})
 
             res.status(200).json({data: projects })
-            
+
         } catch (error) {
             console.log(error);
+        }
+    }
+
+    static getProjectById = async (req: Request, res: Response) => {
+        try {
+            const { id } = req.params
+            const project = await Project.findById(id)
+
+            if(!project) {
+                return res.status(404).json({message: 'Proyecto no encontrado'})
+            }
+
+            res.status(200).json({ data: project})
+            
+        } catch (error) {
+            console.log(error)
         }
     }
 }
