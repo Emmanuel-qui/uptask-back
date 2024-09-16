@@ -1,4 +1,5 @@
 import type { Request, Response} from 'express'
+import { HttpStatus } from '../utils/HttpStatus'
 import Project from '../models/Project'
 
 
@@ -12,7 +13,7 @@ export class ProjectController  {
             // await project.save()
             await Project.create(req.body)
 
-            res.json({message: 'Proyecto creado exitosamente.'})
+            res.status(HttpStatus.CREATED).json({message: 'Proyecto creado exitosamente.'})
         } catch (error) {
             console.log(error)
         }
@@ -23,7 +24,7 @@ export class ProjectController  {
         try {
             const projects = await Project.find({})
 
-            res.status(200).json({data: projects })
+            res.status(HttpStatus.OK).json({data: projects })
 
         } catch (error) {
             console.log(error);
@@ -36,10 +37,10 @@ export class ProjectController  {
             const project = await Project.findById(id)
 
             if(!project) {
-                return res.status(404).json({message: 'Proyecto no encontrado'})
+                return res.status(HttpStatus.NOT_FOUND).json({message: 'Proyecto no encontrado'})
             }
 
-            res.status(200).json({ data: project})
+            res.status(HttpStatus.OK).json({ data: project})
             
         } catch (error) {
             console.log(error)
@@ -52,12 +53,12 @@ export class ProjectController  {
             const project = await Project.findByIdAndUpdate(id, req.body)
             
             if(!project) {
-                return res.status(404).json({message: 'Proyecto no encontrado'})
+                return res.status(HttpStatus.NOT_FOUND).json({message: 'Proyecto no encontrado'})
             }
             
             await project.save()
 
-            res.status(200).json({message: 'Proyecto actualizado correctamente'})
+            res.status(HttpStatus.OK).json({message: 'Proyecto actualizado correctamente'})
             
         } catch (error) {
             console.log(error)
@@ -70,12 +71,12 @@ export class ProjectController  {
             const project = await Project.findById(id)
             
             if(!project) {
-                return res.status(404).json({message: 'Proyecto no encontrado'})
+                return res.status(HttpStatus.NOT_FOUND).json({message: 'Proyecto no encontrado'})
             }
             
             await project.deleteOne()
 
-            res.status(200).json({message: 'Proyecto eliminado correctamente'})
+            res.status(HttpStatus.OK).json({message: 'Proyecto eliminado correctamente'})
             
         } catch (error) {
             console.log(error)
