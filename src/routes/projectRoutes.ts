@@ -55,6 +55,7 @@ router.get('/:projectId/tasks',
 
 router.get('/:projectId/tasks/:taskId',
     param('taskId').isMongoId().withMessage('Parametro no válido'),
+    handleInputErrors,
     TaskController.getTaskById
 )
 
@@ -64,6 +65,12 @@ router.put('/:projectId/tasks/:taskId',
     body('description').notEmpty().withMessage('El campo descripcion es requerido.'),
     handleInputErrors,
     TaskController.updateTask
+)
+
+router.delete('/:projectId/tasks/:taskId',
+    param('taskId').isMongoId().withMessage('Parametro no válido'),
+    handleInputErrors,
+    TaskController.deleteTask
 )
 
 export default router
