@@ -58,4 +58,12 @@ router.get('/:projectId/tasks/:taskId',
     TaskController.getTaskById
 )
 
+router.put('/:projectId/tasks/:taskId',
+    param('taskId').isMongoId().withMessage('Parametro no válido'),
+    body('name').notEmpty().withMessage('El campo nombre de la tarea es requerido.'),
+    body('description').notEmpty().withMessage('El campo descripcion es requerido.'),
+    handleInputErrors,
+    TaskController.updateTask
+)
+
 export default router
