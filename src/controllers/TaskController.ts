@@ -32,6 +32,35 @@ export class TaskController {
             })
         }
     } 
+
+    static getTaskById = async (req: Request, res: Response) => {
+        try {
+            const { taskId } = req.params
+            console.log(taskId)
+            const task = await Task.findById(taskId)
+
+            if(!task) {
+                return res.status(HttpStatus.NOT_FOUND).json({
+                    message: 'Tarea no encontrada'
+                })
+            }
+
+            if(task.project.toString() !== req.project.id) {
+                return res.status(HttpStatus.BAD_REQUEST).json({
+                    message: 'Parametro no válido'
+                })
+            }
+
+
+            res.status(HttpStatus.OK).json({
+                data: task
+            })
+        } catch (error) {
+            res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+                message: error.message
+            })
+        }
+    } 
     
     // static createTask = async (req: Request, res: Response) => {
     //     try {
