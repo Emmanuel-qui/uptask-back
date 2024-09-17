@@ -15,9 +15,23 @@ export class TaskController {
             res.status(HttpStatus.CREATED).json({message: 'Tarea creada exitosamente'})
 
         } catch (error) {
-            console.log(error)
+            res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+                message: error.message
+            })
         }
     }
+
+    static getProjectTasks = async (req: Request, res: Response) => {
+        try {
+            const tasks = await Task.find({project: req.project.id}).populate('project')
+
+            res.status(HttpStatus.OK).json({data: tasks})
+        } catch (error) {
+            res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+                message: error.message
+            })
+        }
+    } 
     
     // static createTask = async (req: Request, res: Response) => {
     //     try {
