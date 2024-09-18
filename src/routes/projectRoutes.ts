@@ -73,4 +73,11 @@ router.delete('/:projectId/tasks/:taskId',
     TaskController.deleteTask
 )
 
+router.post('/:projectId/tasks/:taskId/status',
+    param('taskId').isMongoId().withMessage('Parametro no válido'),
+    body('status').notEmpty().withMessage('El campo estado es requerido.'),
+    handleInputErrors,
+    TaskController.updateStatusTask
+)
+
 export default router
