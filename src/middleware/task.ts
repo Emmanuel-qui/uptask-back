@@ -29,3 +29,18 @@ export async function taskExists(req: Request, res: Response, next: NextFunction
         })
     }
 }
+
+export function taskBelongsToProject(req: Request, res: Response, next: NextFunction) {
+    try {
+        if(req.task.project.toString() !== req.project.id.toString()) {
+            return res.status(HttpStatus.BAD_REQUEST).json({
+                message: 'Parametro no válido'
+            })
+        }
+        next()
+    } catch (error) {
+        return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+            message: error.message
+        })
+    }
+}

@@ -35,13 +35,6 @@ export class TaskController {
 
     static getTaskById = async (req: Request, res: Response) => {
         try {
-
-            if(req.task.project.toString() !== req.project.id) {
-                return res.status(HttpStatus.BAD_REQUEST).json({
-                    message: 'Parametro no válido'
-                })
-            }
-
             res.status(HttpStatus.OK).json({
                 data: req.task
             })
@@ -54,13 +47,6 @@ export class TaskController {
     
     static updateTask = async (req: Request, res: Response) => {
         try {
-            
-            if(req.task.project.toString() !== req.project.id) {
-                return res.status(HttpStatus.BAD_REQUEST).json({
-                    message: 'Parametro no válido'
-                })
-            }
-            
             req.task.name = req.body.name
             req.task.description = req.body.description
             await req.task.save()
@@ -77,13 +63,6 @@ export class TaskController {
     
     static deleteTask = async (req: Request, res: Response) => {
         try {
-            
-            if(req.task.project.toString() !== req.project.id) {
-                return res.status(HttpStatus.BAD_REQUEST).json({
-                    message: 'Parametro no válido'
-                })
-            }
-            
             req.project.tasks = req.project.tasks.filter( task => task.toString() !== req.task.id.toString() )
 
             await Promise.allSettled([req.task.deleteOne(), req.project.save()])
@@ -101,12 +80,6 @@ export class TaskController {
     static updateStatusTask = async (req: Request, res: Response) => {
         try {
             const { status } = req.body
-
-            if(req.task.project.toString() !== req.project.id) {
-                return res.status(HttpStatus.BAD_REQUEST).json({
-                    message: 'Parametro no válido'
-                })
-            }
 
             req.task.status = status
             await req.task.save()
